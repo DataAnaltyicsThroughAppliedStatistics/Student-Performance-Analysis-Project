@@ -1,0 +1,60 @@
+---
+title: "DATAs project"
+author: "DATAs"
+date: "10/5/2021"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
+
+First, make sure your working directory is set to the path on your desktop that contains the dataset. If you don't have the dataset, here is the link to download it:
+https://www.kaggle.com/spscientist/students-performance-in-exams
+
+You can set this by doing "Session" -> "Set Working Directory" -> "Choose Directory..."
+
+
+Load the csv file into our dataframe variable. (df stands for dataframe)
+```{r warning = FALSE, message = FALSE}
+df = read_csv("StudentsPerformance.csv")
+```
+
+
+head() allows us to look at the first 6 rows of the data.
+```{r}
+head(df)
+```
+Replace spaces between words in column names with an underscore. 
+This will make typing the variables names out to be easier
+```{r}
+colnames(df) = gsub("[^[:alnum:]]", "_", tolower(colnames(df))); colnames(df)
+```
+
+
+
+cor() gives us the correlation between the two variables we input. '$' is useful for extracting the particular variable from the dataframe. 
+```{r}
+cor(df$reading_score, df$writing_score)
+```
+
+
+Plotting writing score against reading score using plot(). We can see that these two variables are highly correlated!
+```{r}
+plot(df$reading_score, df$writing_score)
+```
+
+Plot it... but make it fancier with ggplot().
+Also, add a linear regression line. 
+
+geom_point() gives the scatter plot and
+geom_smooth() gives the linear regression line
+```{r}
+ggplot(df, aes(x = writing_score, y = reading_score)) +
+  geom_point(color = "blue") +
+  geom_smooth(method = 'lm', formula = y ~ x, color = "red")
+```
+
